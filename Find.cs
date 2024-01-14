@@ -78,16 +78,16 @@
             return exits;
         }
 
-        public int FindStack(int pos_x, int pos_y, int pos_z)
+        public int FindStack(int startPos_x, int startPos_y, int startPos_z)
         {
             int exits = 0;
             int x, y, z;
 
-            SetMap(pos_x, pos_y, pos_z, seen);
+            SetMap(startPos_x, startPos_y, startPos_z, seen);
 
             Stack<Coord> stack = new Stack<Coord>();
 
-            stack.Push(new Coord(pos_x, pos_y, pos_z));
+            stack.Push(new Coord(startPos_x, startPos_y, startPos_z));
 
             while (stack.TryPop(out Coord coord))
             {
