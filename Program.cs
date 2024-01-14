@@ -74,7 +74,7 @@ namespace Find3d
                     {
                         string path = @".\BoxLabirinth.txt";
 
-                        using (FileStream fstream = new FileStream(path, FileMode.Create))
+                        using (FileStream fstream = new FileStream(path, FileMode.Append))
                         {
                             byte[] buffer = Encoding.UTF8.GetBytes(text);
                             fstream.WriteAsync(buffer, 0, buffer.Length);
