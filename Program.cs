@@ -4,8 +4,10 @@ namespace Find3d
 {
     internal class Program
     {
-        static string LabToString(int[,,] labitinth, StringBuilder sb)
+        static string LabToString(int[,,] labitinth)
         {
+            StringBuilder sb = new StringBuilder();
+
             int count = 0;
 
             for (int i = 0; i < labitinth.GetLength(0); i++)
@@ -66,9 +68,7 @@ namespace Find3d
                 {
                     stop = true;
 
-                    StringBuilder stringBuilder = new StringBuilder();
-
-                    string text = LabToString(find.map, stringBuilder);
+                    string text = LabToString(find.map);
 
                     try
                     {
