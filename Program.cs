@@ -4,64 +4,97 @@ namespace Find3d
 {
     internal class Program
     {
-        static  void Main(string[] args)
-        {            
-            Find find = new Find(5, 5, 5);
+        static string LabToString(int[,,] labitinth, StringBuilder sb)
+        {
+            int count = 0;
 
-            find.PutRandomNumbers(150);
+            for (int i = 0; i < labitinth.GetLength(0); i++)
+                for (int j = 0; j < labitinth.GetLength(1); j++)
+                    for (int k = 0; k < labitinth.GetLength(2); k++)
+                    {
+                        count++;
+                        sb.Append(labitinth[i, j, k].ToString());
+                        if (count % 5 == 0)
+                            sb.Append("\n");
+                        if (count % 25 == 0)
+                            sb.Append("\n");
+                    }
+
+            return sb.ToString() + new string('-', 20) + "\n";
+        }
+
+         static void RefreshLabirinth(int[,,] matrix)
+        {
+            for (int i = 0; i < matrix.GetLength(0); i++)
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                    for (int k = 0; k < matrix.GetLength(2); k++)
+                        if (matrix[i, j, k] != 1) matrix[i, j, k] = 0;
+        }
+
+        static void Main(string[] args)
+        {
+            Find find = new Find(5, 5, 5);
+            
+            find.PutRandomNumbers(200);
 
             int exits = find.FindQueue(2, 2, 2);
-
+            
             Console.WriteLine("Queue " + exits);
 
-            StringBuilder sb = new StringBuilder();
-
-            for (int i = 0; i < find.map.GetLength(0); i++)
-                for (int j = 0; j < find.map.GetLength(1); j++)
-                    for (int k = 0; k < find.map.GetLength(2); k++)
-                        sb.Append(find.map[i, j, k].ToString());
-
-            string text = sb.ToString();
-
-
-            if (exits == 1)
-            {
-                try
-                {
-                    string path = @".\BoxLabirinth.txt";
-
-                    using (FileStream fstream = new FileStream(path, FileMode.Append))
-                    {
-                        byte[] buffer = Encoding.UTF8.GetBytes(text);
-                        fstream.WriteAsync(buffer, 0, buffer.Length);
-                        Console.WriteLine("\nЛабиринт записан в файл");
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-
-
-            for (int i = 0; i < 5; i++)
-                for (int j = 0; j < 5; j++)
-                    for (int k = 0; k < 5; k++)
-                        if (find.map[i, j, k] == 4) find.map[i, j, k] = 0;
+            RefreshLabirinth(find.map);
 
             Console.WriteLine("Stack " + find.FindStack(2, 2, 2));
 
-            for (int i = 0; i < 5; i++)
-                for (int j = 0; j < 5; j++)
-                    for (int k = 0; k < 5; k++)
-                        if (find.map[i, j, k] == 4) find.map[i, j, k] = 0;
+            RefreshLabirinth(find.map);
 
             Console.WriteLine("Depth " + find.FindDepth(2, 2, 2));
 
+            Console.ReadKey();            
 
+            int count = 0;
+            bool stop = false;
+            while (!stop)
+            {
+                Console.CursorVisible = false;
+                Console.Clear();
 
+                count++;
 
+                Console.Write(count);
 
+                if (exits == 1)
+                {
+                    stop = true;
+
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    string text = LabToString(find.map, stringBuilder);
+
+                    try
+                    {
+                        string path = @".\BoxLabirinth.txt";
+
+                        using (FileStream fstream = new FileStream(path, FileMode.Create))
+                        {
+                            byte[] buffer = Encoding.UTF8.GetBytes(text);
+                            fstream.WriteAsync(buffer, 0, buffer.Length);
+                            Console.WriteLine("\nЛабиринт записан в файл");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+
+                    continue;
+                }
+
+                find.Clear();
+
+                find.PutRandomNumbers(200);                
+
+                exits = find.FindQueue(2, 2, 2);
+            }
         }
     }
 }

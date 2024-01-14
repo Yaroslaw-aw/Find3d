@@ -141,5 +141,13 @@
                 SetMap(random.Next(width), random.Next(heigth), random.Next(depth), 1);
             }
         }
+
+        public void Clear()
+        {
+            for (int i = 0; i  < width; i++)
+                for (int j = 0; j < heigth; j++)
+                    for (int k = 0; k < depth; k++)
+                        map[i, j, k] = 0;
+        }
     }
 }
