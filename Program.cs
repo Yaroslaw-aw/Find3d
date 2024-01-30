@@ -4,19 +4,19 @@ namespace Find3d
 {
     internal class Program
     {
-        static string LabToString(int[,,] labitinth)
+        static string LabToString(int[,,] labirinth)
         {
             StringBuilder sb = new StringBuilder();
 
             int count = 0;
 
-            for (int i = 0; i < labitinth.GetLength(0); i++)
-                for (int j = 0; j < labitinth.GetLength(1); j++)
-                    for (int k = 0; k < labitinth.GetLength(2); k++)
+            for (int i = 0; i < labirinth.GetLength(0); i++)
+                for (int j = 0; j < labirinth.GetLength(1); j++)
+                    for (int k = 0; k < labirinth.GetLength(2); k++)
                     {
                         count++;
-                        sb.Append(labitinth[i, j, k].ToString());
-                        if (count % 5 == 0)
+                        sb.Append(labirinth[i, j, k].ToString());
+                        if (count % 5 == 0 && count < 125)
                             sb.Append("\n");
                         if (count % 25 == 0)
                             sb.Append("\n");
@@ -25,7 +25,7 @@ namespace Find3d
             return sb.ToString() + new string('-', 20) + "\n";
         }
 
-         static void RefreshLabirinth(int[,,] matrix)
+        static void RefreshLabirinth(int[,,] matrix)
         {
             for (int i = 0; i < matrix.GetLength(0); i++)
                 for (int j = 0; j < matrix.GetLength(1); j++)
@@ -36,22 +36,17 @@ namespace Find3d
         static void Main(string[] args)
         {
             Find find = new Find(5, 5, 5);
-            
-            find.PutRandomNumbers(200);
 
-            int exits = find.FindQueue(2, 2, 2);
-            
+            find.GenerateLabyrinth(200);
+
+            int exits = find.FindExitsByQueue(2, 2, 2);
             Console.WriteLine("Queue " + exits);
 
             RefreshLabirinth(find.map);
-
-            Console.WriteLine("Stack " + find.FindStack(2, 2, 2));
+            Console.WriteLine("Stack " + find.FindExitsByStack(2, 2, 2));
 
             RefreshLabirinth(find.map);
-
-            Console.WriteLine("Depth " + find.FindDepth(2, 2, 2));
-
-            Console.ReadKey();            
+            Console.WriteLine("Depth " + find.FindExitsByRecursion(2, 2, 2));
 
             int count = 0;
             bool stop = false;
@@ -91,9 +86,9 @@ namespace Find3d
 
                 find.Clear();
 
-                find.PutRandomNumbers(200);                
+                find.GenerateLabyrinth(200);
 
-                exits = find.FindQueue(2, 2, 2);
+                exits = find.FindExitsByQueue(2, 2, 2);
             }
         }
     }

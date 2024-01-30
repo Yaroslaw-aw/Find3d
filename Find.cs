@@ -23,13 +23,13 @@
             this.map = new int[width, heigth, depth];
         }
 
-        private void SetMap(int x, int y, int z, int number) 
+        private void SetValueToMap(int x, int y, int z, int value) 
         {
             if (x < 0 || x >= width) return;
             if (y < 0 || y >= heigth) return;
             if (z < 0 || z >= depth) return;
 
-            map[x, y, z] = number;
+            map[x, y, z] = value;
         }
 
         private bool IsEmpty(int x, int y, int z)
@@ -47,12 +47,12 @@
             return 0;           
         }
 
-        public int FindQueue(int startPos_x, int startPos_y, int startPos_z)
+        public int FindExitsByQueue(int startPos_x, int startPos_y, int startPos_z)
         {
             int exits = 0;
             int x, y, z;
 
-            SetMap(startPos_x, startPos_y, startPos_z, seen);
+            SetValueToMap(startPos_x, startPos_y, startPos_z, seen);
 
             Queue<Coord> queue = new Queue<Coord>();
 
@@ -66,24 +66,24 @@
 
                 exits += Exit(x, width) + Exit(y, heigth) + Exit(z, depth);
 
-                SetMap(x, y, z, visited);
+                SetValueToMap(x, y, z, visited);
 
-                if (IsEmpty(x + 1, y, z)) { queue.Enqueue(new Coord(x + 1, y, z)); SetMap(x + 1, y, z, seen); }
-                if (IsEmpty(x - 1, y, z)) { queue.Enqueue(new Coord(x - 1, y, z)); SetMap(x - 1, y, z, seen); }
-                if (IsEmpty(x, y + 1, z)) { queue.Enqueue(new Coord(x, y + 1, z)); SetMap(x, y + 1, z, seen); }
-                if (IsEmpty(x, y - 1, z)) { queue.Enqueue(new Coord(x, y - 1, z)); SetMap(x, y - 1, z, seen); }
-                if (IsEmpty(x, y, z + 1)) { queue.Enqueue(new Coord(x, y, z + 1)); SetMap(x, y, z + 1, seen); }
-                if (IsEmpty(x, y, z - 1)) { queue.Enqueue(new Coord(x, y, z - 1)); SetMap(x, y, z - 1, seen); }
+                if (IsEmpty(x + 1, y, z)) { queue.Enqueue(new Coord(x + 1, y, z)); SetValueToMap(x + 1, y, z, seen); }
+                if (IsEmpty(x - 1, y, z)) { queue.Enqueue(new Coord(x - 1, y, z)); SetValueToMap(x - 1, y, z, seen); }
+                if (IsEmpty(x, y + 1, z)) { queue.Enqueue(new Coord(x, y + 1, z)); SetValueToMap(x, y + 1, z, seen); }
+                if (IsEmpty(x, y - 1, z)) { queue.Enqueue(new Coord(x, y - 1, z)); SetValueToMap(x, y - 1, z, seen); }
+                if (IsEmpty(x, y, z + 1)) { queue.Enqueue(new Coord(x, y, z + 1)); SetValueToMap(x, y, z + 1, seen); }
+                if (IsEmpty(x, y, z - 1)) { queue.Enqueue(new Coord(x, y, z - 1)); SetValueToMap(x, y, z - 1, seen); }
             }
             return exits;
         }
 
-        public int FindStack(int startPos_x, int startPos_y, int startPos_z)
+        public int FindExitsByStack(int startPos_x, int startPos_y, int startPos_z)
         {
             int exits = 0;
             int x, y, z;
 
-            SetMap(startPos_x, startPos_y, startPos_z, seen);
+            SetValueToMap(startPos_x, startPos_y, startPos_z, seen);
 
             Stack<Coord> stack = new Stack<Coord>();
 
@@ -97,20 +97,19 @@
 
                 exits += Exit(x, width) + Exit(y, heigth) + Exit(z, depth);
 
-                SetMap(x, y, z, visited);
+                SetValueToMap(x, y, z, visited);
 
-                if (IsEmpty(x + 1, y, z)) { stack.Push(new Coord(x + 1, y, z)); SetMap(x + 1, y, z, seen); }
-                if (IsEmpty(x - 1, y, z)) { stack.Push(new Coord(x - 1, y, z)); SetMap(x - 1, y, z, seen); }
-                if (IsEmpty(x, y + 1, z)) { stack.Push(new Coord(x, y + 1, z)); SetMap(x, y + 1, z, seen); }
-                if (IsEmpty(x, y - 1, z)) { stack.Push(new Coord(x, y - 1, z)); SetMap(x, y - 1, z, seen); }
-                if (IsEmpty(x, y, z + 1)) { stack.Push(new Coord(x, y, z + 1)); SetMap(x, y, z + 1, seen); }
-                if (IsEmpty(x, y, z - 1)) { stack.Push(new Coord(x, y, z - 1)); SetMap(x, y, z - 1, seen); }
+                if (IsEmpty(x + 1, y, z)) { stack.Push(new Coord(x + 1, y, z)); SetValueToMap(x + 1, y, z, seen); }
+                if (IsEmpty(x - 1, y, z)) { stack.Push(new Coord(x - 1, y, z)); SetValueToMap(x - 1, y, z, seen); }
+                if (IsEmpty(x, y + 1, z)) { stack.Push(new Coord(x, y + 1, z)); SetValueToMap(x, y + 1, z, seen); }
+                if (IsEmpty(x, y - 1, z)) { stack.Push(new Coord(x, y - 1, z)); SetValueToMap(x, y - 1, z, seen); }
+                if (IsEmpty(x, y, z + 1)) { stack.Push(new Coord(x, y, z + 1)); SetValueToMap(x, y, z + 1, seen); }
+                if (IsEmpty(x, y, z - 1)) { stack.Push(new Coord(x, y, z - 1)); SetValueToMap(x, y, z - 1, seen); }
             }
             return exits;
         }
 
-
-        public int FindDepth(int x, int y, int z)
+        public int FindExitsByRecursion(int x, int y, int z)
         {
             int exits = 0;
 
@@ -118,27 +117,27 @@
 
             exits += Exit(x, width) + Exit(y, heigth) + Exit(z, depth);
 
-            SetMap(x, y, z, seen);
+            SetValueToMap(x, y, z, seen);
 
-            exits += FindDepth(x + 1, y, z);
-            exits += FindDepth(x - 1, y, z);
-            exits += FindDepth(x, y + 1, z);
-            exits += FindDepth(x, y - 1, z);
-            exits += FindDepth(x, y, z + 1);
-            exits += FindDepth(x, y, z - 1);
+            exits += FindExitsByRecursion(x + 1, y, z);
+            exits += FindExitsByRecursion(x - 1, y, z);
+            exits += FindExitsByRecursion(x, y + 1, z);
+            exits += FindExitsByRecursion(x, y - 1, z);
+            exits += FindExitsByRecursion(x, y, z + 1);
+            exits += FindExitsByRecursion(x, y, z - 1);
 
-            SetMap(x, y, z, visited);
+            SetValueToMap(x, y, z, visited);
 
             return exits;
         }         
 
-        public void PutRandomNumbers(int count)
+        public void GenerateLabyrinth(int count)
         {
             Random random = new Random();
 
             for (int i = 0; i < count; i++)
             {
-                SetMap(random.Next(width), random.Next(heigth), random.Next(depth), 1);
+                SetValueToMap(random.Next(width), random.Next(heigth), random.Next(depth), 1);
             }
         }
 
